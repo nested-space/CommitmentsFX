@@ -15,14 +15,16 @@ public class Task {
     private final int id;
     private final StringProperty name;
     private final StringProperty description;
-    private final ObservableList<String> stakeholders;
     private final StringProperty project;
     private final StringProperty projectSubGroup;
-    private final ObservableList<Step> steps;
     private final IntegerProperty currentStep;
     private final BooleanProperty complete;
+
     private final ObjectProperty<LocalDate> created;
     private final ObjectProperty<LocalDate> lastUpdated;
+
+    private final ObservableList<String> stakeholders;
+    private final ObservableList<Step> steps;
 
     public Task(int id, String name, String description, String project,
                 String projectSubGroup, int currentStep, boolean complete,
