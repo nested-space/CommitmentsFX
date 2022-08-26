@@ -20,16 +20,14 @@ public class Task {
     private final ReadOnlyIntegerProperty currentStep;
     private final ReadOnlyBooleanProperty complete;
 
+    private final ObservableList<Integer> stepIDs;
     private final ReadOnlyObjectProperty<LocalDate> created;
     private final ReadOnlyObjectProperty<LocalDate> lastUpdated;
 
-    private final ObservableList<String> stakeholders;
-    private final ObservableList<Step> steps;
-
     public Task(int id, String name, String description, String project,
                 String projectSubGroup, int currentStep, boolean complete,
-                LocalDate created, LocalDate lastUpdated,
-                List<Step> steps, List<String> stakeholders) {
+                List<Integer> steps,
+                LocalDate created, LocalDate lastUpdated) {
         this.id = id;
         this.name = new SimpleStringProperty(name);
         this.description = new SimpleStringProperty(description);
@@ -37,11 +35,10 @@ public class Task {
         this.projectSubGroup = new SimpleStringProperty(projectSubGroup);
         this.currentStep = new SimpleIntegerProperty(currentStep);
         this.complete = new SimpleBooleanProperty(complete);
+        this.stepIDs = FXCollections.observableArrayList(steps);
         this.created = new SimpleObjectProperty<>(created);
         this.lastUpdated = new SimpleObjectProperty<>(lastUpdated);
 
-        this.steps = FXCollections.observableList(steps);
-        this.stakeholders = FXCollections.observableArrayList(stakeholders);
     }
 
     public int getId() {
@@ -112,11 +109,7 @@ public class Task {
         return lastUpdated;
     }
 
-    public ObservableList<Step> getSteps() {
-        return FXCollections.unmodifiableObservableList(steps);
-    }
-
-    public ObservableList<String> getStakeholders() {
-        return FXCollections.unmodifiableObservableList(stakeholders);
+    public ObservableList<Integer> getStepIDs() {
+        return FXCollections.unmodifiableObservableList(stepIDs);
     }
 }

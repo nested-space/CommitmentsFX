@@ -1,6 +1,5 @@
 package com.edencoding.dao;
 
-import com.edencoding.models.Step;
 import com.edencoding.models.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,10 +23,11 @@ public class TaskDAO {
     private static final String projectColumn = "project";
     private static final String projectSubGroupColumn = "projectSubGroup";
     private static final String currentStepColumn = "currentStep";
+
+    private static final String stepIDsColumn = "steps";
     private static final String completeColumn = "complete";
     private static final String createdColumn = "created";
     private static final String lastUpdatedColumn = "lastUpdated";
-
 
     private static final ObservableList<Task> tasks;
 
@@ -55,10 +57,9 @@ public class TaskDAO {
                         rs.getString(projectSubGroupColumn),
                         rs.getInt(currentStepColumn),
                         rs.getBoolean(completeColumn),
+                        convertStepStringToList(rs.getString(stepIDsColumn)),
                         rs.getDate(createdColumn).toLocalDate(),
-                        rs.getDate(lastUpdatedColumn).toLocalDate(),
-                        //TODO: get steps!,
-                        //TODO: get stakeholders!!
+                        rs.getDate(lastUpdatedColumn).toLocalDate()
                 ));
             }
         } catch (SQLException e) {
@@ -67,5 +68,16 @@ public class TaskDAO {
                     LocalDateTime.now() + ": Could not load Tasks from database ");
             tasks.clear();
         }
+    }
+
+    private static List<Integer> convertStepStringToList(String string) {
+        List<Integer> ids = new ArrayList<>();
+        String[] idsAsStrings = string.split(",");
+
+        for (String id : idsAsStrings) {
+            ids.add(Integer.valueOf(id));
+        }
+
+        return ids;
     }
 }
