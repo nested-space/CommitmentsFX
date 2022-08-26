@@ -9,19 +9,21 @@ import java.time.LocalDate;
  */
 public class Step {
     private final int id;
-    private final StringProperty name;
-    private final StringProperty description;
-    private final ObjectProperty<LocalDate>  due;
-    private final ObjectProperty<Actor> actor;
-    private final IntegerProperty parent;
+    private final ReadOnlyStringProperty name;
+    private final ReadOnlyStringProperty description;
+    private final ReadOnlyObjectProperty<LocalDate>  due;
 
+    private final ReadOnlyStringProperty responsible;
+    private final ReadOnlyIntegerProperty parent;
 
-    public Step(int id, LocalDate due, String description, String name, Actor actor, int parent) {
+    public Step(int id, String name, String description,
+                String responsible, LocalDate due,
+                int parent) {
         this.id = id;
         this.name = new SimpleStringProperty(name);
         this.description = new SimpleStringProperty(description);
         this.due = new SimpleObjectProperty<>(due);
-        this.actor = new SimpleObjectProperty<>(actor);
+        this.responsible = new SimpleStringProperty(responsible);
         this.parent = new SimpleIntegerProperty(parent);
     }
 
@@ -33,59 +35,39 @@ public class Step {
         return due.get();
     }
 
-    public ObjectProperty<LocalDate> dueProperty() {
+    public ReadOnlyObjectProperty<LocalDate> dueProperty() {
         return due;
-    }
-
-    public void setDue(LocalDate due) {
-        this.due.set(due);
     }
 
     public String getDescription() {
         return description.get();
     }
 
-    public StringProperty descriptionProperty() {
+    public ReadOnlyStringProperty descriptionProperty() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description.set(description);
     }
 
     public String getName() {
         return name.get();
     }
 
-    public StringProperty nameProperty() {
+    public ReadOnlyStringProperty nameProperty() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name.set(name);
+    public String getActor() {
+        return responsible.get();
     }
 
-    public Actor getActor() {
-        return actor.get();
-    }
-
-    public ObjectProperty<Actor> actorProperty() {
-        return actor;
-    }
-
-    public void setActor(Actor actor) {
-        this.actor.set(actor);
+    public ReadOnlyStringProperty actorProperty() {
+        return responsible;
     }
 
     public int getParent() {
         return parent.get();
     }
 
-    public IntegerProperty parentProperty() {
+    public ReadOnlyIntegerProperty parentProperty() {
         return parent;
-    }
-
-    public void setParent(int parent) {
-        this.parent.set(parent);
     }
 }

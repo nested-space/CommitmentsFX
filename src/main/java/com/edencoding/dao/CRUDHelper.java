@@ -26,6 +26,8 @@ public class CRUDHelper {
                         return rs.getInt(fieldName);
                     case Types.VARCHAR:
                         return rs.getString(fieldName);
+                    case Types.DATE:
+                        return rs.getDate(fieldName).toLocalDate();
                     default:
                         throw new IllegalArgumentException("Index type " + indexDataType + " from sql.Types is not yet supported.");
                 }
@@ -134,16 +136,14 @@ public class CRUDHelper {
     private static String convertObjectToSQLField(Object value, int type) {
         StringBuilder queryBuilder = new StringBuilder();
         switch (type) {
-            case Types.VARCHAR:
+            case Types.VARCHAR, Types.DATE -> {
                 queryBuilder.append("'");
                 queryBuilder.append(value);
                 queryBuilder.append("'");
-                break;
-            case Types.INTEGER:
-                queryBuilder.append(value);
-                break;
-            default:
-                throw new IllegalArgumentException("Index type " + type + " from sql.Types is not yet supported.");
+            }
+            case Types.INTEGER -> queryBuilder.append(value);
+            default ->
+                    throw new IllegalArgumentException("Index type " + type + " from sql.Types is not yet supported.");
         }
         return queryBuilder.toString();
     }

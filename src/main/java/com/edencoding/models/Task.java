@@ -13,22 +13,23 @@ import java.util.List;
 public class Task {
 
     private final int id;
-    private final StringProperty name;
-    private final StringProperty description;
-    private final StringProperty project;
-    private final StringProperty projectSubGroup;
-    private final IntegerProperty currentStep;
-    private final BooleanProperty complete;
+    private final ReadOnlyStringProperty name;
+    private final ReadOnlyStringProperty description;
+    private final ReadOnlyStringProperty project;
+    private final ReadOnlyStringProperty projectSubGroup;
+    private final ReadOnlyIntegerProperty currentStep;
+    private final ReadOnlyBooleanProperty complete;
 
-    private final ObjectProperty<LocalDate> created;
-    private final ObjectProperty<LocalDate> lastUpdated;
+    private final ReadOnlyObjectProperty<LocalDate> created;
+    private final ReadOnlyObjectProperty<LocalDate> lastUpdated;
 
     private final ObservableList<String> stakeholders;
     private final ObservableList<Step> steps;
 
     public Task(int id, String name, String description, String project,
                 String projectSubGroup, int currentStep, boolean complete,
-                LocalDate created, LocalDate lastUpdated) {
+                LocalDate created, LocalDate lastUpdated,
+                List<Step> steps, List<String> stakeholders) {
         this.id = id;
         this.name = new SimpleStringProperty(name);
         this.description = new SimpleStringProperty(description);
@@ -39,8 +40,8 @@ public class Task {
         this.created = new SimpleObjectProperty<>(created);
         this.lastUpdated = new SimpleObjectProperty<>(lastUpdated);
 
-        steps = FXCollections.observableArrayList();
-        stakeholders = FXCollections.observableArrayList();
+        this.steps = FXCollections.observableList(steps);
+        this.stakeholders = FXCollections.observableArrayList(stakeholders);
     }
 
     public int getId() {
@@ -51,115 +52,71 @@ public class Task {
         return name.get();
     }
 
-    public StringProperty nameProperty() {
+    public ReadOnlyStringProperty nameProperty() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name.set(name);
     }
 
     public String getDescription() {
         return description.get();
     }
 
-    public StringProperty descriptionProperty() {
+    public ReadOnlyStringProperty descriptionProperty() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description.set(description);
     }
 
     public String getProject() {
         return project.get();
     }
 
-    public StringProperty projectProperty() {
+    public ReadOnlyStringProperty projectProperty() {
         return project;
-    }
-
-    public void setProject(String project) {
-        this.project.set(project);
     }
 
     public String getProjectSubGroup() {
         return projectSubGroup.get();
     }
 
-    public StringProperty projectSubGroupProperty() {
+    public ReadOnlyStringProperty projectSubGroupProperty() {
         return projectSubGroup;
-    }
-
-    public void setProjectSubGroup(String projectSubGroup) {
-        this.projectSubGroup.set(projectSubGroup);
     }
 
     public int getCurrentStep() {
         return currentStep.get();
     }
 
-    public IntegerProperty currentStepProperty() {
+    public ReadOnlyIntegerProperty currentStepProperty() {
         return currentStep;
-    }
-
-    public void setCurrentStep(int currentStep) {
-        this.currentStep.set(currentStep);
     }
 
     public boolean isComplete() {
         return complete.get();
     }
 
-    public BooleanProperty completeProperty() {
+    public ReadOnlyBooleanProperty completeProperty() {
         return complete;
-    }
-
-    public void setComplete(boolean complete) {
-        this.complete.set(complete);
     }
 
     public LocalDate getCreated() {
         return created.get();
     }
 
-    public ObjectProperty<LocalDate> createdProperty() {
+    public ReadOnlyObjectProperty<LocalDate> createdProperty() {
         return created;
-    }
-
-    public void setCreated(LocalDate created) {
-        this.created.set(created);
     }
 
     public LocalDate getLastUpdated() {
         return lastUpdated.get();
     }
 
-    public ObjectProperty<LocalDate> lastUpdatedProperty() {
+    public ReadOnlyObjectProperty<LocalDate> lastUpdatedProperty() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(LocalDate lastUpdated) {
-        this.lastUpdated.set(lastUpdated);
+    public ObservableList<Step> getSteps() {
+        return FXCollections.unmodifiableObservableList(steps);
     }
 
-    public void addStep(Step step){
-        steps.add(step);
-    }
-
-    public void removeStep(Step step){
-        steps.remove(step);
-    }
-
-    public void addStakeholder(String name){
-        stakeholders.add(name);
-    }
-
-    public void addStakeholders(List<String> names){
-        stakeholders.addAll(names);
-    }
-
-    public void removeStakeholder(String name){
-        stakeholders.remove(name);
+    public ObservableList<String> getStakeholders() {
+        return FXCollections.unmodifiableObservableList(stakeholders);
     }
 }
