@@ -38,6 +38,7 @@ public class Launch extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("fxml/ActorEditWindow.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setTitle("Actor Editor");
             stage.show();
 
         } catch (IOException e) {
