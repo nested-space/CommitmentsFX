@@ -10,6 +10,14 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Database access object for the Actor entity.
+ * <p>
+ * Business Logic requirements:
+ * 1. Must check whether an actor is already present in the database before adding it - should not rely on database uniqueness checks
+ * 2. Should not remove the Actor "_me", which is the Program's determiner for the user's responsibility
+ * 3.
+ */
 public class ActorDAO {
 
     private static final String tableName = "Actors";
@@ -25,6 +33,13 @@ public class ActorDAO {
 
     public static ObservableList<Actor> getActors() {
         return FXCollections.unmodifiableObservableList(actors);
+    }
+
+    public static Optional<Actor> getActor(int id) {
+        for (Actor actor : actors) {
+            if (actor.getId() == id) return Optional.of(actor);
+        }
+        return Optional.empty();
     }
 
     private static void updateActorsFromDB() {
@@ -77,15 +92,21 @@ public class ActorDAO {
     }
 
     public static void insertActor(String actor) {
-        //update database
-        int id = (int) CRUDHelper.create(
-                tableName,
-                new String[]{actorColumn},
-                new Object[]{actor},
-                new int[]{Types.VARCHAR});
+        //TODO: check whether an Actor exists with this name already
+        boolean actorNotAlreadyInDatabase = true;
 
-        //update cache
-        actors.add(new Actor(id, actor));
+        //if actor doesn't exist,
+        if (actorNotAlreadyInDatabase) {
+            //update database
+            int id = (int) CRUDHelper.create(
+                    tableName,
+                    new String[]{actorColumn},
+                    new Object[]{actor},
+                    new int[]{Types.VARCHAR});
+
+            //update cache
+            actors.add(new Actor(id, actor));
+        }
     }
 
     public static void delete(int id) {
@@ -98,10 +119,4 @@ public class ActorDAO {
 
     }
 
-    public static Optional<Actor> getActor(int id) {
-        for (Actor actor : actors) {
-            if (actor.getId() == id) return Optional.of(actor);
-        }
-        return Optional.empty();
-    }
 }

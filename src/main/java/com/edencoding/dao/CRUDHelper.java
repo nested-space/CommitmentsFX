@@ -81,19 +81,12 @@ public class CRUDHelper {
         queryBuilder.append(") ");
         queryBuilder.append(" VALUES (");
         for (int i = 0; i < number; i++) {
-            switch (types[i]) {
-                case Types.VARCHAR:
-                    queryBuilder.append("'");
-                    queryBuilder.append((String) values[i]);
-                    queryBuilder.append("'");
-                    break;
-                case Types.INTEGER:
-                    queryBuilder.append((int) values[i]);
-            }
+            queryBuilder.append(convertObjectToSQLField(values[i], types[i]));
             if (i < number - 1) queryBuilder.append(", ");
         }
         queryBuilder.append(");");
 
+        System.out.println(queryBuilder);
         try (Connection conn = Database.connect()) {
             PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString());
 
@@ -110,7 +103,8 @@ public class CRUDHelper {
         } catch (SQLException ex) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
-                    LocalDateTime.now() + ": Could not add person to database");
+                    LocalDateTime.now() + ": Could not add to database");
+            System.out.println(ex.getMessage());
             return -1;
         }
         return -1;
@@ -136,7 +130,7 @@ public class CRUDHelper {
     private static String convertObjectToSQLField(Object value, int type) {
         StringBuilder queryBuilder = new StringBuilder();
         switch (type) {
-            case Types.VARCHAR, Types.DATE -> {
+            case Types.VARCHAR, Types.DATE, Types.BOOLEAN -> {
                 queryBuilder.append("'");
                 queryBuilder.append(value);
                 queryBuilder.append("'");

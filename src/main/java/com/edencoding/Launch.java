@@ -26,7 +26,7 @@ public class Launch extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         System.out.println("SETUP:\tLaunching");
         launchActorWindow(stage);
     }
@@ -35,10 +35,10 @@ public class Launch extends Application {
         System.out.println("SETUP:\tOpening Actor Window");
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("fxml/ActorEditWindow.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("fxml/TaskEditWindow.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle("Actor Editor");
+            stage.setTitle("Task Editor");
             stage.show();
 
         } catch (IOException e) {

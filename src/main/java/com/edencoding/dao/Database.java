@@ -1,7 +1,5 @@
 package com.edencoding.dao;
 
-import com.edencoding.Launch;
-
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
@@ -12,7 +10,7 @@ public class Database {
     /**
      * Location of database
      */
-    private static final String seed_file_location = Launch.class.getResource("database/commitments.db").toExternalForm();
+    private static final String seed_file_location = "C:/Code/commitments.db";
 
     /**
      * Currently only table needed
